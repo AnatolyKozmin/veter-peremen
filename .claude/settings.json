@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/anatolij/CT/veter_peremen/venv/bin/**)",
+      "Bash(venv/bin/python -c \"import fastapi, sqlalchemy; print\\('ok', fastapi.__version__\\)\")",
+      "Bash(/Users/anatolij/CT/veter_peremen/venv/bin/python -c \"import fastapi, sqlalchemy; print\\('ok', fastapi.__version__\\)\")",
+      "Bash(python3 -m venv venv)",
+      "Bash(venv/bin/pip install *)",
+      "Bash(venv/bin/python -c \"import fastapi; print\\('fastapi', fastapi.__version__\\)\")",
+      "Bash(curl -sS http://127.0.0.1:8765/healthcheck/)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} %{size_download}b\\\\n\" http://127.0.0.1:8765/)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} %{size_download}b\\\\n\" http://127.0.0.1:8765/static/styles.css)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} %{size_download}b\\\\n\" http://127.0.0.1:8765/static/app.js)",
+      "Bash(curl -sS -X POST http://127.0.0.1:8765/registration/ -H \"Content-Type: application/json\" -d '{\"full_name\":\"Анна Иванова\",\"age_group\":\"18-30\",\"is_student\":true,\"student_of\":\"МГУ\"}')",
+      "Bash(curl -sS -X POST http://127.0.0.1:8765/registration/ -H \"Content-Type: application/json\" -d '{\"full_name\":\"Пётр Петров\",\"age_group\":\"30-50\",\"is_student\":false}')",
+      "Bash(curl -sS -X POST http://127.0.0.1:8765/registration/ -H \"Content-Type: application/json\" -d '{\"full_name\":\"Ваня\",\"age_group\":\"6-18\",\"is_student\":true,\"student_of\":\"Школа №1\"}')",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://127.0.0.1:8765/admin/registrations)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}\\\\n\" -u admin:wrong http://127.0.0.1:8765/admin/registrations)",
+      "Bash(curl -sS -u admin:admin http://127.0.0.1:8765/admin/registrations)",
+      "Bash(curl -sS -u admin:admin http://127.0.0.1:8765/admin/stats)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} %{size_download}b\\\\n\" -u admin:admin http://127.0.0.1:8765/admin)",
+      "Bash(kill 84259)",
+      "Bash(lsof -ti:8765)",
+      "Bash(xargs kill -9)",
+      "Bash(docker --version)",
+      "Bash(docker compose *)",
+      "Bash(lsof -nP -iTCP:8000 -sTCP:LISTEN)",
+      "Bash(ps -p 12321 -o pid,ppid,command)"
+    ]
+  }
+}

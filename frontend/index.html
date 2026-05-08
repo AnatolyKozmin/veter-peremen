@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F5EAD0" />
+  <title>Ветер Перемен — фестиваль</title>
+  <link rel="preload" href="/static/assets/Oks%20Free%200013.otf" as="font" type="font/otf" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Manrope:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="#" class="topbar__logo" aria-label="Ветер Перемен">
+    <img src="/static/assets/logo.svg" alt="ВПФ" />
+  </a>
+  <nav class="topbar__nav">
+    <a href="#about">фестиваль</a>
+    <a href="#register" class="topbar__cta">регистрация</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero__decor" aria-hidden="true">
+      <img class="decor decor--disko" src="/static/assets/diskoshar.svg" alt="" />
+      <img class="decor decor--star-red" src="/static/assets/star-red.svg" alt="" />
+      <img class="decor decor--star-orange" src="/static/assets/star-orange.svg" alt="" />
+    </div>
+
+    <h1 class="hero__title" data-text="ВЕТЕР ПЕРЕМЕН">
+      <span>ВЕТЕР</span>
+      <span>ПЕРЕМЕН</span>
+    </h1>
+    <p class="hero__subtitle">твоя машина времени</p>
+    <p class="hero__accent">приходи и почувствуй</p>
+
+    <a href="#register" class="btn btn--primary hero__cta">
+      зарегистрироваться
+      <span aria-hidden="true">→</span>
+    </a>
+
+    <div class="hero__meta">
+      <div class="meta-item">
+        <span class="meta-item__label">когда</span>
+        <span class="meta-item__value">16 мая</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-item__label">где</span>
+        <span class="meta-item__value">басманный двор</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-item__label">сколько</span>
+        <span class="meta-item__value">бесплатно</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <img class="decor decor--star-orange decor--about" src="/static/assets/star-orange.svg" alt="" aria-hidden="true" />
+    <div class="about__grid">
+      <article class="card card--cream">
+        <h3>о чём это</h3>
+        <p>фестиваль для тех, кто чувствует ветер перемен — встреча, музыка, разговоры, движение. место, где ты находишь своих.</p>
+      </article>
+      <article class="card card--blue">
+        <h3>для кого</h3>
+        <p>для всех — школьников, студентов, взрослых. без билетов, без условий. только тёплая атмосфера и свобода.</p>
+      </article>
+      <article class="card card--yellow">
+        <h3>как попасть</h3>
+        <p>заполни короткую форму ниже — и ты в списке. следи за подробностями в наших соцсетях.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="register" class="register">
+    <img class="decor decor--star-red decor--register" src="/static/assets/star-red.svg" alt="" aria-hidden="true" />
+    <div class="register__head">
+      <h2 class="section-title">регистрация</h2>
+      <p class="section-sub">пара полей — и готово</p>
+    </div>
+
+    <form id="reg-form" class="form" novalidate>
+      <div class="field">
+        <label for="full_name">как тебя зовут</label>
+        <input id="full_name" name="full_name" type="text" autocomplete="name" required minlength="2" maxlength="255" placeholder="имя и фамилия" />
+        <span class="field__error" data-for="full_name"></span>
+      </div>
+
+      <fieldset class="field field--group">
+        <legend>возраст</legend>
+        <div class="chips">
+          <label class="chip">
+            <input type="radio" name="age_group" value="6-18" required />
+            <span>6—18</span>
+          </label>
+          <label class="chip">
+            <input type="radio" name="age_group" value="18-30" />
+            <span>18—30</span>
+          </label>
+          <label class="chip">
+            <input type="radio" name="age_group" value="30-50" />
+            <span>30—50</span>
+          </label>
+        </div>
+        <span class="field__error" data-for="age_group"></span>
+      </fieldset>
+
+      <fieldset class="field field--group">
+        <legend>учишься?</legend>
+        <div class="chips">
+          <label class="chip">
+            <input type="radio" name="is_student" value="yes" required />
+            <span>да</span>
+          </label>
+          <label class="chip">
+            <input type="radio" name="is_student" value="no" />
+            <span>нет</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div id="student-of-wrap" class="field field--hidden">
+        <label for="student_of">где учишься</label>
+        <input id="student_of" name="student_of" type="text" maxlength="255" placeholder="школа / университет / курсы" />
+        <span class="field__error" data-for="student_of"></span>
+      </div>
+
+      <button type="submit" class="btn btn--submit">
+        <span class="btn__label">я в деле</span>
+        <span class="btn__spinner" aria-hidden="true"></span>
+      </button>
+
+      <p id="form-status" class="form__status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="success" id="success-screen" hidden>
+    <div class="success__inner">
+      <div class="success__mark" aria-hidden="true">✦</div>
+      <h2>ты в списке!</h2>
+      <p>спасибо, что ты с нами. следите за подробностями в наших соцсетях.</p>
+      <button type="button" class="btn btn--ghost" id="success-back">вернуться</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>© ветер перемен</span>
+  <span class="footer__accent">до встречи</span>
+</footer>
+
+<script src="/static/app.js" defer></script>
+</body>
+</html>

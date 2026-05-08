@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    container_name: veter_peremen_app
+    restart: unless-stopped
+    # Порт на хост не публикуется — наружу выпускает общий nginx через сеть arkadium_shared.
+    # Для локальной разработки запускай uvicorn напрямую через venv (см. README),
+    # либо раскомментируй ports ниже:
+    # ports:
+    #   - "127.0.0.1:${APP_PORT:-8000}:8000"
+    expose:
+      - "8000"
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/database.db
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+    volumes:
+      - db_data:/data
+    networks:
+      - arkadium_shared
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthcheck/')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  db_data:
+
+networks:
+  arkadium_shared:
+    external: true
+    name: arkadium_shared

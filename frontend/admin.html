@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>админка — ветер перемен</title>
+<link rel="preload" href="/static/assets/Oks%20Free%200013.otf" as="font" type="font/otf" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  @font-face {
+    font-family: "Oks Free";
+    src: url("/static/assets/Oks%20Free%200013.otf") format("opentype");
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #F5EAD0;
+    --bg-soft: #FBF3DF;
+    --ink: #141414;
+    --ink-soft: #2C2C2C;
+    --red: #FD5A47;
+    --blue: #1E5BA8;
+    --blue-soft: #C4DDE8;
+    --yellow: #FCBF49;
+    --mint: #06D6A0;
+    --cream: #F4ECD8;
+    --ff-display: "Oks Free", "Unbounded", system-ui, sans-serif;
+    --ff-sub: "Russo One", sans-serif;
+    --ff-body: "Manrope", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--ff-body); min-height: 100vh; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px; border-bottom: 2px solid var(--ink);
+    background: rgba(245, 234, 208, 0.85); backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar__brand {
+    display: inline-flex; align-items: center; gap: 14px;
+    color: inherit; text-decoration: none;
+  }
+  .topbar__brand img { height: 40px; width: auto; display: block; }
+  .topbar__title {
+    font-family: var(--ff-display); font-weight: 900;
+    text-transform: lowercase; font-size: 22px; letter-spacing: -0.01em;
+  }
+  .topbar__title small {
+    display: block; font-family: var(--ff-sub); font-size: 11px;
+    letter-spacing: 0.06em; color: var(--ink-soft); text-transform: uppercase;
+  }
+  .topbar__actions { display: flex; gap: 10px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--ff-sub); text-transform: lowercase; font-size: 14px;
+    padding: 10px 16px; border-radius: 999px; border: 2px solid var(--ink);
+    background: var(--bg-soft); color: var(--ink); cursor: pointer;
+    transition: transform .12s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn--primary { background: var(--ink); color: var(--bg); }
+  .btn--accent  { background: var(--yellow); }
+
+  main { padding: 32px 28px 80px; max-width: 1280px; margin: 0 auto; }
+
+  h1.page-title {
+    font-family: var(--ff-display); font-weight: 900;
+    font-size: clamp(32px, 4vw, 52px); margin: 0 0 6px;
+    text-transform: lowercase; letter-spacing: -0.01em;
+    text-shadow: 3px 3px 0 var(--blue);
+  }
+  .page-sub {
+    font-family: var(--ff-sub); font-size: 14px;
+    color: var(--ink-soft); margin: 0 0 28px; text-transform: lowercase;
+  }
+
+  /* Карточки статистики */
+  .stats {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin-bottom: 28px;
+  }
+  .stat {
+    padding: 22px; border: 2px solid var(--ink); border-radius: 22px;
+    background: var(--cream); box-shadow: 6px 6px 0 var(--ink);
+  }
+  .stat--blue   { background: var(--blue-soft); }
+  .stat--yellow { background: var(--yellow); }
+  .stat--mint   { background: #C9F2E3; }
+  .stat__label {
+    font-family: var(--ff-sub); font-size: 12px;
+    text-transform: lowercase; letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .stat__value {
+    font-family: var(--ff-display); font-weight: 900;
+    font-size: 38px; line-height: 1;
+    margin-top: 6px;
+  }
+  .stat__sub {
+    font-family: var(--ff-body); font-size: 12px;
+    color: var(--ink-soft); margin-top: 4px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    align-items: center; margin-bottom: 16px;
+  }
+  .toolbar input[type="search"] {
+    flex: 1 1 240px; min-width: 200px;
+    font-family: var(--ff-body); font-size: 15px;
+    padding: 12px 16px; border: 2px solid var(--ink);
+    border-radius: 999px; background: #fff;
+  }
+  .toolbar input[type="search"]:focus { outline: none; box-shadow: 0 0 0 3px rgba(230,57,70,0.18); }
+  .toolbar select {
+    font-family: var(--ff-sub); text-transform: lowercase;
+    padding: 12px 16px; border: 2px solid var(--ink);
+    border-radius: 999px; background: var(--bg-soft); cursor: pointer;
+  }
+
+  /* Таблица */
+  .table-wrap {
+    border: 2px solid var(--ink); border-radius: 22px;
+    overflow: hidden; background: var(--bg-soft);
+    box-shadow: 8px 8px 0 var(--blue);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead {
+    background: var(--ink); color: var(--bg);
+    font-family: var(--ff-sub); text-transform: lowercase;
+    letter-spacing: 0.04em;
+  }
+  th, td { padding: 14px 16px; text-align: left; }
+  th { font-size: 13px; }
+  td { font-size: 15px; border-top: 1px solid rgba(20,20,20,0.08); }
+  tbody tr:hover { background: rgba(252, 191, 73, 0.18); }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 4px 10px; border: 1.5px solid var(--ink);
+    border-radius: 999px; font-family: var(--ff-sub);
+    font-size: 12px; text-transform: lowercase;
+    background: #fff;
+  }
+  .badge--yes { background: var(--mint); }
+  .badge--no  { background: #FFB8B8; }
+
+  .empty, .loading, .error {
+    padding: 60px 24px; text-align: center;
+    font-family: var(--ff-sub); color: var(--ink-soft);
+    text-transform: lowercase;
+  }
+  .error { color: var(--red); }
+
+  /* iOS safe-area */
+  @supports (padding: max(0px)) {
+    .topbar {
+      padding-left: max(28px, env(safe-area-inset-left));
+      padding-right: max(28px, env(safe-area-inset-right));
+    }
+    main {
+      padding-left: max(28px, env(safe-area-inset-left));
+      padding-right: max(28px, env(safe-area-inset-right));
+    }
+  }
+
+  /* Доступность */
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .btn { min-height: 44px; }
+  }
+
+  /* ====== Планшет ≤ 900px ====== */
+  @media (max-width: 900px) {
+    .stat__value { font-size: 32px; }
+    .table-wrap { box-shadow: 6px 6px 0 var(--blue); }
+  }
+
+  /* ====== Мобильный ≤ 720px — таблица как карточки ====== */
+  @media (max-width: 720px) {
+    .topbar { padding: 14px 18px; }
+    .topbar__brand { gap: 10px; }
+    .topbar__brand img { height: 32px; }
+    .topbar__title { font-size: 16px; }
+    .topbar__title small { font-size: 10px; }
+    .btn { padding: 9px 14px; font-size: 13px; }
+
+    main { padding: 24px 18px 60px; }
+
+    .stats { gap: 12px; }
+    .stat { padding: 18px; box-shadow: 5px 5px 0 var(--ink); }
+    .stat__value { font-size: 28px; }
+
+    .toolbar { gap: 10px; }
+    .toolbar input[type="search"],
+    .toolbar select {
+      width: 100%;
+      flex: 1 1 100%;
+      font-size: 16px; /* предотвратить iOS zoom */
+      padding: 12px 14px;
+    }
+
+    /* Перекомпоновка таблицы: каждая строка = карточка */
+    .table-wrap {
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+    table, thead, tbody, tr, th, td { display: block; }
+    thead { display: none; }
+    tbody { display: flex; flex-direction: column; gap: 12px; }
+    tr {
+      background: var(--bg-soft);
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 5px 5px 0 var(--blue);
+    }
+    tr:hover { background: var(--bg-soft); }
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 15px;
+      border-top: 1px solid rgba(20,20,20,0.08);
+      text-align: right;
+      word-break: break-word;
+    }
+    td:first-child { border-top: none; padding-top: 2px; }
+    td:last-child { padding-bottom: 2px; }
+    td::before {
+      content: attr(data-label);
+      font-family: var(--ff-sub);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      text-transform: lowercase;
+      flex-shrink: 0;
+      text-align: left;
+    }
+    /* В режиме карточки скрываем малозначимые поля? — нет, оставим все */
+  }
+
+  /* ====== Маленький мобильный ≤ 380px ====== */
+  @media (max-width: 380px) {
+    .topbar__actions { gap: 6px; }
+    .btn { padding: 8px 11px; font-size: 12px; }
+    .stat__value { font-size: 24px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stats .stat:last-child { grid-column: span 2; }
+    tr { box-shadow: 4px 4px 0 var(--blue); }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="topbar__brand" aria-label="Ветер Перемен">
+    <img src="/static/assets/logo.svg" alt="ВПФ" />
+    <div class="topbar__title">
+      <small>ветер перемен</small>
+      админка
+    </div>
+  </a>
+  <div class="topbar__actions">
+    <button class="btn btn--accent" id="refresh">обновить</button>
+    <button class="btn btn--primary" id="export">скачать csv</button>
+  </div>
+</header>
+
+<main>
+  <h1 class="page-title">регистрации</h1>
+  <p class="page-sub">все, кто записался на фестиваль</p>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="поиск по имени или учебному заведению…" />
+    <select id="filter-age">
+      <option value="">все возраста</option>
+      <option value="6-18">6—18</option>
+      <option value="18-30">18—30</option>
+      <option value="30-50">30—50</option>
+    </select>
+    <select id="filter-student">
+      <option value="">все</option>
+      <option value="yes">студенты</option>
+      <option value="no">не студенты</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <div id="state" class="loading">загружаем…</div>
+    <table id="table" hidden>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>имя</th>
+          <th>возраст</th>
+          <th>студент</th>
+          <th>где учится</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const state = document.getElementById("state");
+  const table = document.getElementById("table");
+  const tbody = document.getElementById("rows");
+  const statsBox = document.getElementById("stats");
+  const search = document.getElementById("search");
+  const filterAge = document.getElementById("filter-age");
+  const filterStudent = document.getElementById("filter-student");
+
+  let allRows = [];
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  }
+
+  async function fetchJson(url) {
+    const res = await fetch(url, { credentials: "same-origin" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  function renderStats(stats) {
+    const ageEntries = Object.entries(stats.by_age_group || {});
+    const ageHtml = ageEntries
+      .map(([k, v]) => `<div><b>${escapeHtml(k)}</b> — ${v}</div>`)
+      .join("") || '<div class="stat__sub">пока пусто</div>';
+
+    statsBox.innerHTML = `
+      <div class="stat">
+        <div class="stat__label">всего</div>
+        <div class="stat__value">${stats.total}</div>
+        <div class="stat__sub">записей</div>
+      </div>
+      <div class="stat stat--mint">
+        <div class="stat__label">студенты</div>
+        <div class="stat__value">${stats.students}</div>
+      </div>
+      <div class="stat stat--yellow">
+        <div class="stat__label">не студенты</div>
+        <div class="stat__value">${stats.non_students}</div>
+      </div>
+      <div class="stat stat--blue">
+        <div class="stat__label">по возрастам</div>
+        <div class="stat__sub" style="margin-top:8px; font-size:14px; line-height:1.7;">${ageHtml}</div>
+      </div>
+    `;
+  }
+
+  function applyFilters() {
+    const q = search.value.trim().toLowerCase();
+    const age = filterAge.value;
+    const stu = filterStudent.value;
+
+    const filtered = allRows.filter((r) => {
+      if (age && r.age_group !== age) return false;
+      if (stu === "yes" && !r.is_student) return false;
+      if (stu === "no" && r.is_student) return false;
+      if (q) {
+        const hay = (r.full_name + " " + (r.student_of || "")).toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty">никто не подошёл под фильтр</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered
+      .map(
+        (r) => `
+          <tr>
+            <td data-label="#">${r.id}</td>
+            <td data-label="имя">${escapeHtml(r.full_name)}</td>
+            <td data-label="возраст">${escapeHtml(r.age_group)}</td>
+            <td data-label="студент"><span class="badge ${r.is_student ? "badge--yes" : "badge--no"}">${r.is_student ? "да" : "нет"}</span></td>
+            <td data-label="где учится">${escapeHtml(r.student_of || "—")}</td>
+          </tr>
+        `
+      )
+      .join("");
+  }
+
+  async function load() {
+    state.textContent = "загружаем…";
+    state.className = "loading";
+    table.hidden = true;
+    try {
+      const [list, stats] = await Promise.all([
+        fetchJson("/admin/registrations"),
+        fetchJson("/admin/stats"),
+      ]);
+      allRows = list || [];
+      renderStats(stats);
+      if (allRows.length === 0) {
+        state.textContent = "пока никто не записался";
+        state.className = "empty";
+        return;
+      }
+      state.hidden = true;
+      table.hidden = false;
+      applyFilters();
+    } catch (err) {
+      state.textContent = "ошибка: " + err.message;
+      state.className = "error";
+    }
+  }
+
+  function exportCsv() {
+    const header = ["id", "full_name", "age_group", "is_student", "student_of"];
+    const lines = [header.join(",")];
+    for (const r of allRows) {
+      const row = header.map((k) => {
+        const v = r[k] ?? "";
+        const s = String(v).replaceAll('"', '""');
+        return /[,"\n]/.test(s) ? `"${s}"` : s;
+      });
+      lines.push(row.join(","));
+    }
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "registrations.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById("refresh").addEventListener("click", load);
+  document.getElementById("export").addEventListener("click", exportCsv);
+  search.addEventListener("input", applyFilters);
+  filterAge.addEventListener("change", applyFilters);
+  filterStudent.addEventListener("change", applyFilters);
+
+  load();
+})();
+</script>
+</body>
+</html>
