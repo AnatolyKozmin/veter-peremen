@@ -25,7 +25,9 @@
       "Bash(docker --version)",
       "Bash(docker compose *)",
       "Bash(lsof -nP -iTCP:8000 -sTCP:LISTEN)",
-      "Bash(ps -p 12321 -o pid,ppid,command)"
+      "Bash(ps -p 12321 -o pid,ppid,command)",
+      "Bash(rsync -av --exclude='.git' --exclude='__pycache__' --exclude='venv' --exclude='certs' --exclude='.env' . root@82.22.38.111:/root/veter_peremen/)",
+      "Bash(git remote *)"
     ]
   }
 }
